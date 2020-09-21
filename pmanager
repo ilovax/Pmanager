@@ -1,0 +1,33 @@
+#!/bin/bash
+pass=/root/.passwords
+help="[-] usage pmanager [Command] [Args]\n
+\nCommands:
+\n\tls : list all passwords
+\n\tshow target : print password of target
+\n\tedit : edit the passwords
+"
+
+if [ "$#" -eq 0 ]; then
+    echo "[-] usage pmanager [Command] [Args] , pmanager --help for more information"
+
+else
+	case $1 in
+	"--help")
+		echo -e $help;;
+
+	"ls")
+		cat	$pass;;
+
+	"show")
+		if [ "$#" -eq 1 ]; then
+			printf "show requires one argument\n"
+		else
+			grep $2 $pass
+		fi;;
+	"edit")
+		subl $pass;;
+	*)
+		echo "$1 no such command, pmanager --help for more information";;
+	esac
+fi
+
