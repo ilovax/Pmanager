@@ -71,11 +71,9 @@ def get_options(args, account, secret, username, email):
 		elif opt in ("-e","--email"):
 			email = arg
 
-
-
 def save_account(name, password, username, email):
-	password = crypt(password)
-	account = Account(name, password, username, email)
+	password,iv = crypt(password)
+	account = Account(name=name, password=password, username=username, email=email, iv=iv)
 	account.save()
 	
 if __name__ == "__main__":
@@ -88,22 +86,25 @@ if __name__ == "__main__":
 		"-a,--account : Account name [default=>'empty']",
 		"-s,--secret : Secret word for password randomization [default=>'empty']",
 		"-u,--username : Account username [default=>'']",
-		"-e,--email : Account email [default=>'']"]
+		"-e,--email : Account email [default=>'example@gmail.com']"]
 	
 	# getting the options 
 	args = sys.argv[1:]
 	account = "empty"
 	secret = "empty"
 	username = ""
-	email = ""
-	
+	email = "example@gmail.com"
 	get_options(args, account, secret, username, email)
 	
-		
 	# creating password 
 	password = create_pass(secret)
-	logging.info(f"account = {account} , password = {password}, username = {username}, email = {email}")
+	#logging.info(f"account = {account} , password = {password}, username = {username}, email = {email}")
 	
 	# connecting to database
 	connect_to_db('./config/db.yaml')
+
+	# Crypting password and saving the account
+	save_account(account, password, username, email)
 	
+	# disconnect
+	disconnect_from_db()

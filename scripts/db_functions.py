@@ -16,4 +16,4 @@ def connect_to_db(db_config_file_name="../config/db.yaml"):
         authentication_source = db_conf['source']
     
     # Connecting
-    connect(db=db, username=username, password=password, host=host, port=port,authentication_source='admin')
+    connect(db=db, username=username, password=password, host=host, port=port,authentication_source=authentication_source)
