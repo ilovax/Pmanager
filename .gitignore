@@ -10,3 +10,9 @@
 
 # python virtualenv
 venv
+
+# db config file
+config/db.yaml
+
+# pycache
+*/__pycache__/

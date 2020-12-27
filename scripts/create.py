@@ -2,7 +2,9 @@ import getopt, sys
 import logging, coloredlogs
 import string, random
 from hashlib import sha1
+from db_functions import connect_to_db
 
+# to config the logging format and adding coloring 
 def log_config(loggin,coloredlogs):
 	logger = logging.getLogger(__name__)
 	coloredlogs.install(level='DEBUG', logger=logger)
@@ -63,4 +65,7 @@ if __name__ == "__main__":
 	# creating password 
 	password = create_pass(account,secret)
 	logging.info(f"account = {account} , password = {password}")
+	
+	# connecting to database
+	connect_to_db('./config/db.yaml')
 	
