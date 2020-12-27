@@ -17,8 +17,8 @@ def char_code_somme(word):
 		somme += ord(i)
 	return somme
 
-# if arguments are empty use  the string empty
-def create_pass(account="empty",secret="empty"):
+# Creating random password
+def create_pass(secret):
 	# seed the radnom generator
 	randint = random.randint(0,99999999999)
 	random.seed(char_code_somme(secret)+randint)
@@ -34,37 +34,60 @@ def create_pass(account="empty",secret="empty"):
 	password = sha1(random_str.encode()).hexdigest()
 	return password
 
+def print_help(msgs):
+	print('COMMAND LINE OPTIONS')
+	for msg in msgs:
+		print(f'\t {msg}')
+
 if __name__ == "__main__":
 	# config logging  
 	log_config(logging,coloredlogs)
 
 	# getting the options 
 	args = sys.argv[1:]
-	account = ""
-	secret = ""
+	account = "empty"
+	secret = "empty"
+	username = ""
+	email = ""
+	# Default help menu entries
+	help_msgs = [
+		"-h,--help : Display help menu",
+		"-a,--account : Account name [default=>'empty']",
+		"-s,--secret : Secret word for password randomization [default=>'empty']",
+		"-u,--username : Account username [default=>'']",
+		"-e,--email : Account email [default=>'']"]
 	
+	# If user didn't supply options 
 	if len(args) == 0 :
 		logging.warning("Usage : create.py -a <account_name> -s <secret_word>")
+		logging.info("Use -h to show help menu")
 		# using costume exit status number
 		sys.exit(-666)
 	
 	try:
-	  opts, args = getopt.getopt(args,"ha:s:",["help","account=","secret="])
+	  opts, args = getopt.getopt(args,"ha:s:u:e:",["help","account=","secret=","username=","email="])
 	except:
 		logging.warning("Usage : create.py -a <account_name> -s <secret_word>")
+		logging.info("Use -h to show help menu")
 		sys.exit(-666)
 	
 	for opt, arg in opts:
 		if opt in ("-h","--help"):
 			logging.info("Usage : create.py -a <account_name> -s <secret_word>")
-			sys.exit(-666)
+			print_help(help_msgs)
+			sys.exit()
 		elif opt in ("-a","--account"):
-			account = arg
+			account = arg 
 		elif opt in ("-s","--secret"):
 			secret = arg
+		elif opt in ("-u","--username"):
+			username = arg
+		elif opt in ("-e","--email"):
+			email = arg
+		
 	# creating password 
-	password = create_pass(account,secret)
-	logging.info(f"account = {account} , password = {password}")
+	password = create_pass(secret)
+	logging.info(f"account = {account} , password = {password}, username = {username}, email = {email}")
 	
 	# connecting to database
 	connect_to_db('./config/db.yaml')
