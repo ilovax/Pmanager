@@ -3,9 +3,11 @@ import logging, coloredlogs
 import string, random
 from hashlib import sha1
 from db_functions import connect_to_db,disconnect_from_db
+from models import Account
+from crypt_functions import crypt
 
 # to config the logging format and adding coloring 
-def log_config(loggin,coloredlogs):
+def log_config(loggin, coloredlogs):
 	logger = logging.getLogger(__name__)
 	coloredlogs.install(level='DEBUG', logger=logger)
 	coloredlogs.install(fmt='%(asctime)s | %(programname)s | %(levelname)s : %(message)s')
@@ -39,24 +41,8 @@ def print_help(msgs):
 	for msg in msgs:
 		print(f'\t {msg}')
 
-if __name__ == "__main__":
-	# config logging  
-	log_config(logging,coloredlogs)
+def get_options(args, account, secret, username, email):
 
-	# getting the options 
-	args = sys.argv[1:]
-	account = "empty"
-	secret = "empty"
-	username = ""
-	email = ""
-	# Default help menu entries
-	help_msgs = [
-		"-h,--help : Display help menu",
-		"-a,--account : Account name [default=>'empty']",
-		"-s,--secret : Secret word for password randomization [default=>'empty']",
-		"-u,--username : Account username [default=>'']",
-		"-e,--email : Account email [default=>'']"]
-	
 	# If user didn't supply options 
 	if len(args) == 0 :
 		logging.warning("Usage : create.py -a <account_name> -s <secret_word>")
@@ -84,6 +70,35 @@ if __name__ == "__main__":
 			username = arg
 		elif opt in ("-e","--email"):
 			email = arg
+
+
+
+def save_account(name, password, username, email):
+	password = crypt(password)
+	account = Account(name, password, username, email)
+	account.save()
+	
+if __name__ == "__main__":
+	# config logging  
+	log_config(logging,coloredlogs)
+
+	# Default help menu entries
+	help_msgs = [
+		"-h,--help : Display help menu",
+		"-a,--account : Account name [default=>'empty']",
+		"-s,--secret : Secret word for password randomization [default=>'empty']",
+		"-u,--username : Account username [default=>'']",
+		"-e,--email : Account email [default=>'']"]
+	
+	# getting the options 
+	args = sys.argv[1:]
+	account = "empty"
+	secret = "empty"
+	username = ""
+	email = ""
+	
+	get_options(args, account, secret, username, email)
+	
 		
 	# creating password 
 	password = create_pass(secret)

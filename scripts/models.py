@@ -6,3 +6,4 @@ class Account(DynamicDocument):
     password = StringField(max_length=200, required=True)
     username = StringField(max_length=50)
     email = EmailField()
+    iv = StringField(max_length=200, required=True)
