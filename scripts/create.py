@@ -2,7 +2,7 @@ import getopt, sys
 import logging, coloredlogs
 import string, random
 from hashlib import sha1
-from db_functions import connect_to_db
+from db_functions import connect_to_db,disconnect_from_db
 
 # to config the logging format and adding coloring 
 def log_config(loggin,coloredlogs):

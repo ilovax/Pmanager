@@ -1,5 +1,8 @@
-from mongoengine import connect
+from mongoengine import connect, disconnect
 import yaml
+
+def disconnect_from_db():
+    disconnect()
 
 def connect_to_db(db_config_file_name="../config/db.yaml"):
     # getting config params from db.yaml 
@@ -10,6 +13,7 @@ def connect_to_db(db_config_file_name="../config/db.yaml"):
         password = db_conf["password"]
         host = db_conf["host"]
         port = int(db_conf["port"])
+        authentication_source = db_conf['source']
     
     # Connecting
-    connect(db=db, username=username, password=password, host=host, port=port)
+    connect(db=db, username=username, password=password, host=host, port=port,authentication_source='admin')
