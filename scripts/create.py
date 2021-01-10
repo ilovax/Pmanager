@@ -72,12 +72,15 @@ def get_options(args, account, secret, username, email):
 			email = arg
 	return account,secret,username,email
 	
-
 def save_account(name, password, username, email):
 	password,iv = crypt(password)
 	account = Account(name=name, password=password, username=username, email=email, iv=iv)
 	account.save()
 	
+def check_name_email(name, email):
+	accounts = Account.objects(email=email, name=name)
+	return len(accounts)
+
 if __name__ == "__main__":
 	# config logging  
 	log_config(logging,coloredlogs)
@@ -106,8 +109,9 @@ if __name__ == "__main__":
 	logging.info(f"account = {account} , password = {password}, username = {username}, email = {email}")
 	
 	# check if  (name and email) exist 
-	#if check_name_email():
-	#	exit()
+	if check_name_email(account, email):
+		logging.warning(f"You already have {account} with {email} as an email")
+		sys.exit()
 
 
 	# Crypting password and saving the account
