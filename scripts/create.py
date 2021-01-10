@@ -70,6 +70,8 @@ def get_options(args, account, secret, username, email):
 			username = arg
 		elif opt in ("-e","--email"):
 			email = arg
+	return account,secret,username,email
+	
 
 def save_account(name, password, username, email):
 	password,iv = crypt(password)
@@ -94,14 +96,19 @@ if __name__ == "__main__":
 	secret = "empty"
 	username = ""
 	email = "example@gmail.com"
-	get_options(args, account, secret, username, email)
+	account,secret,username,email = get_options(args, account, secret, username, email)
 	
 	# creating password 
 	password = create_pass(secret)
-	#logging.info(f"account = {account} , password = {password}, username = {username}, email = {email}")
 	
 	# connecting to database
 	connect_to_db('./config/db.yaml')
+	logging.info(f"account = {account} , password = {password}, username = {username}, email = {email}")
+	
+	# check if  (name and email) exist 
+	#if check_name_email():
+	#	exit()
+
 
 	# Crypting password and saving the account
 	save_account(account, password, username, email)
