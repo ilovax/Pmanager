@@ -2,6 +2,7 @@ import getopt, sys
 import logging, coloredlogs
 from create import log_config, check_name_email, print_help
 from db_functions import connect_to_db,disconnect_from_db
+from models import Account
 
 def get_options(args, account, email, help_msgs):
 
@@ -56,8 +57,9 @@ if __name__ == "__main__":
 		logging.warning(f"You don't have {account} with {email} as an email")
 		sys.exit()
 
-    
-	
+    # Delete the account/email pair  
+	account = Account.objects(email=email, name=account)
+	account.delete()
 	
 	# disconnect
 	disconnect_from_db()
