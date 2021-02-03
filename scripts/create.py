@@ -41,7 +41,7 @@ def print_help(msgs):
 	for msg in msgs:
 		print(f'\t {msg}')
 
-def get_options(args, account, secret, username, email):
+def get_options(args, account, secret, username, email, help_msgs):
 
 	# If user didn't supply options 
 	if len(args) == 0 :
@@ -88,18 +88,23 @@ if __name__ == "__main__":
 	# Default help menu entries
 	help_msgs = [
 		"-h,--help : Display help menu",
-		"-a,--account : Account name [default=>'empty']",
+		"-a,--account : Account name [Required]",
 		"-s,--secret : Secret word for password randomization [default=>'empty']",
 		"-u,--username : Account username [default=>'']",
 		"-e,--email : Account email [default=>'example@gmail.com']"]
 	
 	# getting the options 
 	args = sys.argv[1:]
-	account = "empty"
+	account = ""
 	secret = "empty"
 	username = ""
 	email = "example@gmail.com"
-	account,secret,username,email = get_options(args, account, secret, username, email)
+	account,secret,username,email = get_options(args, account, secret, username, email, help_msgs)
+	
+	# exit if account name is empty
+	if account == "":
+		logging.warning("Please specify the account name")
+		sys.exit()
 	
 	# creating password 
 	password = create_pass(secret)
