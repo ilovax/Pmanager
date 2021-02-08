@@ -122,5 +122,6 @@ if __name__ == "__main__":
 	# Crypting password and saving the account
 	save_account(account, password, username, email)
 	
+	logging.info(f"Account had been created ✔️")
 	# disconnect
 	disconnect_from_db()

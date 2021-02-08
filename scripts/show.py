@@ -48,6 +48,11 @@ if __name__ == "__main__":
 	email = "example@gmail.com"
 	account, email = get_options(args, account, email, help_msgs)
 
+	# exit if account name is empty
+	if account == "":
+		logging.warning("Please specify the account name")
+		sys.exit()
+	
     # connecting to database
 	connect_to_db('./config/db.yaml')
 	logging.info(f"account = {account}, email = {email}")
