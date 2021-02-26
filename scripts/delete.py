@@ -8,7 +8,7 @@ def get_options(args, account, email, help_msgs):
 
 	# If user didn't supply options 
 	if len(args) == 0 :
-		logging.warning("Usage : delete.py -a <account_name> -e <email_address>")
+		logging.warning("Usage : -a <account_name> -e <email_address>")
 		logging.info("Use -h to show help menu")
 		# using costume exit status number
 		sys.exit(-666)
@@ -16,13 +16,13 @@ def get_options(args, account, email, help_msgs):
 	try:
 	  opts, args = getopt.getopt(args,"ha:e:",["help","account=","email="])
 	except:
-		logging.warning("Usage : delete.py -a <account_name> -e <email_address>")
+		logging.warning("Usage : -a <account_name> -e <email_address>")
 		logging.info("Use -h to show help menu")
 		sys.exit(-666)
 	
 	for opt, arg in opts:
 		if opt in ("-h","--help"):
-			logging.info("Usage : delete.py -a <account_name> -e <email_address>")
+			logging.info("Usage : -a <account_name> -e <email_address>")
 			print_help(help_msgs)
 			sys.exit()
 		elif opt in ("-a","--account"):
@@ -51,6 +51,8 @@ if __name__ == "__main__":
 	# exit if account name is empty
 	if account == "":
 		logging.warning("Please specify the account name")
+		logging.warning("Usage : -a <account_name> -e <email_address>")
+		logging.info("Use -h to show help menu")
 		sys.exit()
 	
     # connecting to database
@@ -59,7 +61,7 @@ if __name__ == "__main__":
 
     # check if  (name and email) exist 
 	if not check_name_email(account, email):
-		logging.warning(f"You don't have {account} with {email} as an email")
+		logging.warning(f"You don't have '{account}' account with {email} as an email")
 		sys.exit()
 
     # Delete the account/email pair  

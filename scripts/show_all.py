@@ -13,7 +13,7 @@ if __name__ == "__main__":
 	# Finding all accounts
 	accounts= Account.objects()
 	for account in accounts:
-		logging.info(f"\n[account: {account.name},\nemail: {account.email},\nusername: {account.username}]\n")
+		logging.info(f"\naccount: {account.name},\nemail: {account.email},\nusername: {account.username}\n")
 
 	# disconnect
 	disconnect_from_db()

@@ -1,11 +1,14 @@
 #!/bin/bash
-pass=/root/.passwords
+
 help="[-] usage pmanager [Command] [Args]\n
 \nCommands:
-\n\tls : list all passwords
-\n\tshow target : print password of target
-\n\tedit : edit the passwords
+\n\t create : create a new radnom password for an account 
+\n\t ls : list all accounts
+\n\t show : print password of an account
+\n\t edit : edit the password of an account
+\n\n\t (*) Use pmanager [Command] -h for help menu of the command
 "
+scripts_folder=scripts
 
 if [ "$#" -eq 0 ]; then
     echo "[-] usage pmanager [Command] [Args] , pmanager --help for more information"
@@ -16,16 +19,48 @@ else
 		echo -e $help;;
 
 	"ls")
-		cat	$pass;;
+		python	$scripts_folder/show_all.py;;
 
 	"show")
-		if [ "$#" -eq 1 ]; then
-			printf "show requires one argument\n"
+		if [ "$#" -lt 2 ]; then
+			printf "show requires at least one argument\n"
+			python $scripts_folder/show.py $2
+		elif [ "$#" -eq 2 ]; then
+			python $scripts_folder/show.py $2
 		else
-			grep $2 $pass
+			shift
+			python $scripts_folder/show.py $@
 		fi;;
 	"edit")
-		subl $pass;;
+		if [ "$#" -lt 2 ]; then
+			printf "edit requires at least one argument\n"
+			python $scripts_folder/edit.py $2
+		elif [ "$#" -eq 2 ]; then
+			python $scripts_folder/edit.py $2
+		else
+			shift
+			python $scripts_folder/edit.py $@
+		fi;;
+	"create")
+		if [ "$#" -lt 2 ]; then
+			printf "create requires at least one argument\n"
+			python $scripts_folder/create.py $2
+		elif [ "$#" -eq 2 ]; then
+			python $scripts_folder/create.py $2
+		else
+			shift
+			python $scripts_folder/create.py $@
+		fi;;
+	"delete")
+		if [ "$#" -lt 2 ]; then
+			printf "delete requires at least one argument\n"
+			python $scripts_folder/delete.py $2
+		elif [ "$#" -eq 2 ]; then
+			python $scripts_folder/delete.py $2
+		else
+			shift
+			python $scripts_folder/delete.py $@
+		fi;;
 	*)
 		echo "$1 no such command, pmanager --help for more information";;
 	esac

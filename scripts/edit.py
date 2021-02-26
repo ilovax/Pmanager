@@ -9,7 +9,7 @@ def get_options(args, account, email, new_password, help_msgs):
 
 	# If user didn't supply options 
 	if len(args) == 0 :
-		logging.warning("Usage : edit.py -a <account_name> -e <email_address> -p <password>")
+		logging.warning("Usage : -a <account_name> -e <email_address> -p <password>")
 		logging.info("Use -h to show help menu")
 		# using costume exit status number
 		sys.exit(-666)
@@ -17,13 +17,13 @@ def get_options(args, account, email, new_password, help_msgs):
 	try:
 	  opts, args = getopt.getopt(args,"ha:e:p:",["help","account=","email=","password="])
 	except:
-		logging.warning("Usage : edit.py -a <account_name> -e <email_address> -p <password>")
+		logging.warning("Usage : -a <account_name> -e <email_address> -p <password>")
 		logging.info("Use -h to show help menu")
 		sys.exit(-666)
 	
 	for opt, arg in opts:
 		if opt in ("-h","--help"):
-			logging.info("Usage : edit.py -a <account_name> -e <email_address> -p <password>")
+			logging.info("Usage : -a <account_name> -e <email_address> -p <password>")
 			print_help(help_msgs)
 			sys.exit()
 		elif opt in ("-a","--account"):
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
 	# check if  (name and email) exist 
 	if not check_name_email(account, email):
-		logging.warning(f"You don't have {account} with {email} as an email")
+		logging.warning(f"You don't have '{account}' account with {email} as an email")
 		sys.exit()
 
 	# Edit password for the account/email pair  
